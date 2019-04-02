@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  /* background-color: red; */
+  border-radius: 4px;
+  padding: 10px;
+  border: solid 3px #2a3a3a;
+}
+
+.current {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+}
+.current p {
+  font-size: 18px;
+  font-weight: bold;
+}
+.min-max {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.min-max p {
+  font-size: 14px;
+}

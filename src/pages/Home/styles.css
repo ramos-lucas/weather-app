@@ -1,0 +1,21 @@
+.btn-container {
+  display: flex;
+  margin: 10px 0;
+}
+
+.btn-container button {
+  margin-right: 10px;
+}
+.btn-container button:last-child {
+  margin-right: 0px;
+}
+
+@media screen and (max-width: 500px) {
+  .btn-container {
+    flex-direction: column;
+  }
+  .btn-container button {
+    margin-right: 0;
+    margin-bottom: 5px;
+  }
+}
