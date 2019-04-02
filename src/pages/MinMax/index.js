@@ -30,7 +30,7 @@ const findMinAndMax = cities => {
     if (!min.temp || city.main.temp_min < min.temp) {
       min = { temp: city.main.temp_min, city: city.name };
     }
-    if (!max.temp || city.main.temp_max < max.temp) {
+    if (!max.temp || city.main.temp_max > max.temp) {
       max = { temp: city.main.temp_max, city: city.name };
     }
   });

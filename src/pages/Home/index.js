@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import './styles.css';
-import weatherService from '../../services/weather';
-import { Actions as WeatherActions } from '../../store/ducks/weather';
+import { Thunks as WeatherActions } from '../../store/ducks/weather';
 
 import WeatherInfo from '../../components/WeatherInfo';
 import Button from '../../components/Button';
@@ -15,15 +14,9 @@ class Home extends Component {
     cities: ['Campinas', 'São Carlos', 'São Paulo']
   };
 
-  getCity = async city => {
-    const { getRequest, getSuccess } = this.props;
-    try {
-      getRequest(city);
-      const response = await weatherService.getWeather(city);
-      getSuccess({ ...response.data, name: city });
-    } catch (e) {
-      console.log(e);
-    }
+  getCity = city => {
+    const { getWeather } = this.props;
+    getWeather(city);
   };
 
   render() {
@@ -31,26 +24,24 @@ class Home extends Component {
     const { data, loading } = this.props;
     return (
       <div>
-        <div>
-          <div className="btn-container">
-            {cities.map(city => (
-              <Button key={city} onClick={() => this.getCity(city)}>
-                {city}
-              </Button>
-            ))}
-          </div>
-          {loading ? (
-            <div>Carregando...</div>
-          ) : data ? (
-            <WeatherInfo data={data} />
-          ) : (
-            <div>Selecione uma cidade</div>
-          )}
-          <div className="btn-container">
-            <Link className="button" to="/min-max">
-              Mostrar min/max
-            </Link>
-          </div>
+        <div className="btn-container">
+          {cities.map(city => (
+            <Button key={city} onClick={() => this.getCity(city)}>
+              {city}
+            </Button>
+          ))}
+        </div>
+        {loading ? (
+          <div>Carregando...</div>
+        ) : data ? (
+          <WeatherInfo data={data} />
+        ) : (
+          <div>Selecione uma cidade</div>
+        )}
+        <div className="btn-container">
+          <Link className="button" to="/min-max">
+            Mostrar min/max
+          </Link>
         </div>
       </div>
     );

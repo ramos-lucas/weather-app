@@ -1,19 +1,23 @@
+import service from '../../services/weather';
+
 export const Types = {
-  GET_REQUEST: 'weather/GET_REQUEST',
-  GET_SUCCESS: 'weather/GET_SUCCESS'
+  START_REQUEST: 'weather/START_REQUEST',
+  REQUEST_SUCCESS: 'weather/REQUEST_SUCCESS',
+  REQUEST_FAILURE: 'weather/REQUEST_FAILURE'
 };
 
 const INITIAL_STATE = {
   cities: [],
   selected: null,
-  loading: false
+  loading: false,
+  error: null
 };
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case Types.GET_REQUEST:
+    case Types.START_REQUEST:
       return { ...state, loading: true, selected: action.payload.city };
-    case Types.GET_SUCCESS:
+    case Types.REQUEST_SUCCESS:
       return {
         ...state,
         cities: [
@@ -30,12 +34,28 @@ export default function(state = INITIAL_STATE, action) {
 }
 
 export const Actions = {
-  getRequest: city => ({
-    type: Types.GET_REQUEST,
+  startRequest: city => ({
+    type: Types.START_REQUEST,
     payload: { city }
   }),
-  getSuccess: data => ({
-    type: Types.GET_SUCCESS,
+  requestSuccess: data => ({
+    type: Types.REQUEST_SUCCESS,
     payload: { data }
+  }),
+  requestFailure: error => ({
+    type: Types.REQUEST_FAILURE,
+    payload: { error }
   })
+};
+
+export const Thunks = {
+  getWeather: city => async dispatch => {
+    dispatch(Actions.startRequest(city));
+    try {
+      const { data } = await service.getWeather(city);
+      dispatch(Actions.requestSuccess(data));
+    } catch (e) {
+      dispatch(Actions.requestFailure('Erro ao recuperar dados'));
+    }
+  }
 };
